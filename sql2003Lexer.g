@@ -86,7 +86,7 @@ COMMENT
     :   (   Start_Comment ( options {greedy=false;} : . )* End_Comment )+ 
 		{
 //			$channel=HIDDEN;
-			SKIP();
+			skip();
 		} 
     ;
 
@@ -94,7 +94,7 @@ LINE_COMMENT
     : 	(   ( Line_Comment | '--' ) ~('\n'|'\r')* '\r'? '\n')+ 
 		{
 //			$channel=HIDDEN;
-			SKIP();
+			skip();
 		} 
     ;
 
@@ -1566,15 +1566,15 @@ Unicode_Identifier  :
 Space    :  ' '
 {
 //	$channel=HIDDEN;
-	SKIP();
+	skip();
 };
 
 White_Space  :	( Control_Characters  | Extended_Control_Characters )+ 
 {
 //	$channel=HIDDEN;
-	SKIP();
+	skip();
 };
 
 
-BAD : . { error(UNKNOWN_CHARACTER, $text); skip(); } ;
+BAD : . { System.err.println("UNKNOWN_CHARACTER "+$text); skip(); } ;
 

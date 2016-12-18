@@ -4,7 +4,6 @@ options
 {
     language=Java;
     tokenVocab=sql2003Lexer;
-    output=AST;
     backtrack=true;
     memoize=true;
 }
@@ -189,7 +188,7 @@ sql2003Parser
 left_bracket_or_trigraph    : Left_Bracket  | Left_Bracket_Trigraph;
 right_bracket_or_trigraph   : Right_Bracket | Right_Bracket_Trigraph;
 
-unimplemented_error : { error(UNIMPLEMENTED_FEATURE, $text); skip(); } ;
+unimplemented_error : {  System.err.println("UNIMPLEMENTED_FEATURE "+$text); } ;
 
 
 //  Keyword Tokens
@@ -3162,7 +3161,7 @@ set_predicate_part_2
 	options {k=1;}
 	:  IS ( NOT )? a SET;
 
-a	:	Regular_Identifier {$Regular_Identifier.text == 'A'}?;
+a	:	Regular_Identifier {$Regular_Identifier.text == "A"}?;
 
 /*
 		 8.18 type_predicate  (p414)
@@ -3285,7 +3284,7 @@ language_clause   :  LANGUAGE language_name ;
 
 language_name   :  ADA | c | COBOL | FORTRAN | MUMPS | PASCAL | PLI | SQL;
 
-c	:	Regular_Identifier {$Regular_Identifier.text == 'C'}?;
+c	:	Regular_Identifier {$Regular_Identifier.text == "C"}?;
 
 /*
 Table 14 -- Standard programming languages
@@ -6350,7 +6349,7 @@ ada_qualified_type_specification :
 		|	INDICATOR_TYPE
 		)
 	;
-one	:	Unsigned_Integer {$UnsignedInteger.text == '1'};
+one	:	Unsigned_Integer {$Unsigned_Integer.text == "1"}?;
 
 ada_unqualified_type_specification :
 		CHAR Left_Paren one Double_Period  length  Right_Paren
@@ -6537,9 +6536,8 @@ cobol_variable_definition :
 		( zero_one | seven_seven ) cobol_host_identifier cobol_type_specification
 		 ~(Period)* Period
 		;
-zero_one	:	Unsigned_Integer {$Unsigned_Integer.text == '01'}?;
-seven_seven	:	Unsigned_Integer {$Unsigned_Integer.text == '77'}?;
-
+zero_one	:	Unsigned_Integer {$Unsigned_Integer.text == "01"}?;
+seven_seven	:	Unsigned_Integer {$Unsigned_Integer.text == "77"}?;
 cobol_host_identifier  :  Regular_Identifier /*!! See the Syntax Rules.*/;
 
 cobol_type_specification :
@@ -6567,13 +6565,13 @@ cobol_character_type :
 		( CHARACTER SET ( IS )? Character_Set_Name  )?
 		( PIC | PICTURE ) ( IS )? ( x ( Left_Paren length  Right_Paren )? )+
 		;
-x	:	Regular_Identifier {$Regular_Identifier.text == 'X'}?;
+x	:	Regular_Identifier {$Regular_Identifier.text == "X"}?;
 
 cobol_national_character_type :
 		( CHARACTER SET ( IS )? Character_Set_Name  )?
 		( PIC | PICTURE ) ( IS )? ( n ( Left_Paren length  Right_Paren )? )+
 		;
-n	:	Regular_Identifier {$Regular_Identifier.text == 'N'}?;
+n	:	Regular_Identifier {$Regular_Identifier.text == "N"}?;
 
 cobol_CLOB_variable :
 		( USAGE ( IS )? )?
@@ -6614,13 +6612,13 @@ cobol_REF_variable  :  ( USAGE ( IS )? )? SQL TYPE IS reference_type ;
 cobol_numeric_type :
 		( PIC | PICTURE ) ( IS )? s cobol_nines_specification ( USAGE ( IS )? )? DISPLAY SIGN LEADING SEPARATE;
 
-s	:	Regular_Identifier {$Regular_Identifier.text == 'S'}?;
+s	:	Regular_Identifier {$Regular_Identifier.text == "S"}?;
 
 cobol_nines_specification :
 		cobol_nines ( v ( cobol_nines )? )?
 	|	v cobol_nines
 	;
-v	:	Regular_Identifier {$Regular_Identifier.text == 'V'}?;
+v	:	Regular_Identifier {$Regular_Identifier.text == "V"}?;
 
 cobol_integer_type  :  cobol_binary_integer;
 
@@ -6628,7 +6626,7 @@ cobol_binary_integer  :  ( PIC | PICTURE ) ( IS )? s cobol_nines ( USAGE ( IS )?
 
 cobol_nines  :  ( nine ( Left_Paren length  Right_Paren )? )+;
 
-nine	:	Unsigned_Integer {$Unsigned_Integer.text == '9'}?;
+nine	:	Unsigned_Integer {$Unsigned_Integer.text == "9"}?;
 
 /*
 		 20.6 embedded_sql_fortran_program (p1025)
